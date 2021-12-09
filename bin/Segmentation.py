@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 from scipy import interpolate,ndimage
 
-Texture = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/APP/Textures/freeTexture3.png")
+Texture = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Textures/freeTexture3.png")
 Texture = cv2.cvtColor(Texture, cv2.COLOR_BGR2RGB)
 Taille_chemin = 1
 ###### Segmentation
@@ -28,7 +28,7 @@ segmented_image = centers[labels.flatten()]
 # reshape back to the original image dimension
 segmented_image = segmented_image.reshape(Texture.shape)
 plt.imshow(segmented_image,origin='lower')
-plt.savefig("segmented_image.png")
+plt.savefig("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Resultat/Segmentation/segmented_image.png")
 plt.show()
 
 ###### Labelisation des pierre
