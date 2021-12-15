@@ -5,8 +5,8 @@ from numpy.core.fromnumeric import shape
 from scipy import interpolate,ndimage
 
 ## Reference du background & texture
-patch_background_elem = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Textures/freeTexture2.png")
-Texture = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Textures/freeTexture3.png")
+patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
+Texture = cv2.imread("../Textures/freeTexture3.png")
 Taille_chemin = 200
 
 ######## Taille de patch de background ########
@@ -51,7 +51,7 @@ Points_parametrisation = np.linspace(0, 1.01, nbPoint)
 tck, u = interpolate.splprep([pointx, pointy], s=0)
 chemin = interpolate.splev(Points_parametrisation, tck)
 plt.plot(chemin[0],chemin[1])
-plt.savefig("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Resultat/Interpolation/draw_on_image_01.png")
+plt.savefig("../Resultat/Interpolation/draw_on_image_01.png")
 plt.show()
 plt.close()
 
@@ -72,7 +72,7 @@ for i in range(nbPoint):
     #environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:] = environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:]*cercle3
     mask[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1]=mask[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1]*cercle
 plt.imshow(mask,cmap='gray', vmin = 0, vmax = 1)
-plt.savefig("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Resultat/Interpolation/chemin.png")
+plt.savefig("../Resultat/Interpolation/chemin.png")
 plt.show()
 
 
@@ -104,7 +104,7 @@ segmented_image = centers[labels.flatten()]
 # reshape back to the original image dimension
 segmented_image = segmented_image.reshape(Texture.shape)
 plt.imshow(segmented_image,origin='lower')
-plt.savefig("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Resultat/Segmentation/segmented_image.png")
+plt.savefig("../Resultat/Segmentation/segmented_image.png")
 plt.show()
 
 ###### Incrustation chemin
