@@ -8,6 +8,7 @@ from scipy import interpolate,ndimage
 patch_background_elem = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Textures/freeTexture2.png")
 Texture = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Textures/freeTexture3.png")
 Taille_chemin = 200
+
 ######## Taille de patch de background ########
 
 

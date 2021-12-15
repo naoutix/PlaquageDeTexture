@@ -1,11 +1,14 @@
 import cv2
+from matplotlib.colors import BoundaryNorm
 import numpy as np
 import matplotlib.pyplot as plt 
 from scipy import interpolate,ndimage
 
+# Chemin de la Texture
 Texture = cv2.imread("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Textures/freeTexture3.png")
 Texture = cv2.cvtColor(Texture, cv2.COLOR_BGR2RGB)
 Taille_chemin = 1
+
 ###### Segmentation
 
 # reshape the image to a 2D array of pixels and 3 color values (RGB)
@@ -32,8 +35,27 @@ plt.savefig("C:/Users/leoar/Documents/n7/3A/APP/PlaquageDeTexture/Resultat/Segme
 plt.show()
 
 ###### Labelisation des pierre
-image = -labels.reshape(512,512)+1
-pierre_segmenter, num_pierre = ndimage.label(image)
+label_image = -labels.reshape(512,512)+1
+pierre_segmenter, num_pierre = ndimage.label(label_image)
 plt.imshow(pierre_segmenter,origin='lower')
+plt.show()
+boundingBox = ndimage.find_objects(pierre_segmenter)
+
+np.save("arraySave/boundingBox",boundingBox)
+np.save("arraySave/label_image",label_image)
+plt.figure()
+print(num_pierre)
+print(len(boundingBox))
+for pierre in range(num_pierre):
+    #plt.subplot(round(np.sqrt(num_pierre))+1,round(np.sqrt(num_pierre))+1,pierre+1)
+    a=segmented_image[boundingBox[pierre]]
+    #mask = label_image[boundingBox[pierre+6]]
+    plt.figure()
+    plt.imshow(a)
+    plt.show()
+    print(pierre)
+    #np.savetxt("arraySave/pierre_1",mask,fmt="%d")
+
+#plt.imshow(pierre_segmenter,origin='lower')
 plt.show()
 
