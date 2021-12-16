@@ -53,7 +53,7 @@ plt.savefig("../Resultat/Interpolation/draw_on_image_01.png")
 plt.show()
 plt.close()
 
-# Implentation du chemin avec 
+# Implentation du chemin
 x=np.arange(-Taille_chemin,Taille_chemin+1,1)
 X,Y = np.meshgrid(x,x)
 cercle = ~(X*X+Y*Y < Taille_chemin*Taille_chemin)
@@ -69,6 +69,7 @@ for i in range(nbPoint):
     xc = round(chemin[1][i])
     #environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:] = environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:]*cercle3
     mask[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1]=mask[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1]*cercle
+np.savetxt("chemin_mask",mask,fmt="%d")
 plt.imshow(mask,cmap='gray', vmin = 0, vmax = 1)
 plt.savefig("../Resultat/Interpolation/chemin.png")
 plt.show()
@@ -79,8 +80,9 @@ plt.show()
 ###### Segmentation
 
 image = np.load("arraySave/image.npy")
-boundingBox = np.load("arraySave/boundingBox.npy",allow_pickle=True )
-label_image = np.load("arraySave/label_image.npy")
+ListeTaillePierre = np.load("arraySave/ListTaillePierre.npy" )
+Pierre_mask = np.load("arraySave/PierreMask.npy",allow_pickle=True)
+Pierre_sorted = np.load("arraySave/PierreSorted.npy",allow_pickle=True)
 
 
 ###### Incrustation chemin
