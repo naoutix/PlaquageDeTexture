@@ -3,6 +3,8 @@ from matplotlib.colors import BoundaryNorm
 import numpy as np
 import matplotlib.pyplot as plt 
 from scipy import interpolate,ndimage
+from math import sqrt
+
 
 # Chemin de la Texture
 Texture = cv2.imread("../Textures/freeTexture3.png")
@@ -28,34 +30,63 @@ centers = np.uint8(centers)
 # flatten the labels array
 labels = labels.flatten()
 segmented_image = centers[labels.flatten()]
+
 # reshape back to the original image dimension
 segmented_image = segmented_image.reshape(Texture.shape)
-plt.imshow(segmented_image,origin='lower')
-plt.savefig("../Resultat/Segmentation/segmented_image.png")
-plt.show()
 
 ###### Labelisation des pierre
 label_image = -labels.reshape(512,512)+1
+
+# Separation des differentes pierres
 pierre_segmenter, num_pierre = ndimage.label(label_image)
-plt.imshow(pierre_segmenter,origin='lower')
-plt.show()
+
+# BoundingBox
 boundingBox = ndimage.find_objects(pierre_segmenter)
 
+### Triage des pierre selon leur taille
+
+# Triage des pierre par Taille en pixel
+num_pierre = len(boundingBox)
+ListTaillePierre = []
+for pierre in range(num_pierre):
+    boundingBoxPierre = (boundingBox[pierre][0],boundingBox[pierre][1])
+    taillePierre = len(np.argwhere(label_image[boundingBoxPierre] == 1))
+    ListTaillePierre.append(taillePierre)
+
+Index_sort = np.argsort(-np.asarray(ListTaillePierre))
+
+###### Sauvegarde Des donnes
+np.save("arraySave/image",Texture)
 np.save("arraySave/boundingBox",boundingBox)
 np.save("arraySave/label_image",label_image)
-plt.figure()
-print(num_pierre)
-print(len(boundingBox))
-for pierre in range(num_pierre):
-    #plt.subplot(round(np.sqrt(num_pierre))+1,round(np.sqrt(num_pierre))+1,pierre+1)
-    a=segmented_image[boundingBox[pierre]]
-    #mask = label_image[boundingBox[pierre+6]]
-    plt.figure()
-    plt.imshow(a)
-    plt.show()
-    print(pierre)
-    #np.savetxt("arraySave/pierre_1",mask,fmt="%d")
+np.save("arraySave/PierreSorted",Index_sort)
 
-#plt.imshow(pierre_segmenter,origin='lower')
+print("Nombre de pierre trouvé dans l'image:", num_pierre)
+print("taille des pierre trié:",end="")
+print(np.take_along_axis(np.asarray(ListTaillePierre), Index_sort, axis=0))
+
+
+#### Retour Graphique
+
+plt.figure()
+plt.subplot(2,2,1)
+a = plt.imshow(segmented_image,origin='lower')
+plt.savefig("../Resultat/Segmentation/segmentation.png")
+plt.subplot(2,2,2)
+plt.imshow(Texture,origin='lower')
+plt.subplot(2,2,3)
+plt.imshow(pierre_segmenter,origin='lower')
 plt.show()
+plt.savefig(a,"../Resultat/Segmentation/segmentation.png")
+
+plt.figure()
+for pierre in range(num_pierre):
+    plt.subplot(round(sqrt(num_pierre))+1,round(sqrt(num_pierre))+1,pierre+1)
+    pierre_trie = Index_sort[pierre]
+    boundingBoxPierre = (boundingBox[pierre_trie][0],boundingBox[pierre_trie][1])
+    a = Texture[boundingBoxPierre]
+    plt.imshow(a)
+plt.show()
+
+plt.savefig("../Resultat/Segmentation/Pierre.png")
 

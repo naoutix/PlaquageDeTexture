@@ -4,16 +4,14 @@ import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import shape 
 from scipy import interpolate,ndimage
 
-## Reference du background & texture
+## Reference du background
 patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
-Texture = cv2.imread("../Textures/freeTexture3.png")
 Taille_chemin = 200
 
 ######## Taille de patch de background ########
 
 
 patch_background_elem = cv2.cvtColor(patch_background_elem, cv2.COLOR_BGR2RGB)
-Texture = cv2.cvtColor(Texture, cv2.COLOR_BGR2RGB)
 
 L = 8 #Largeur
 l = 8 #Longeur
@@ -80,36 +78,11 @@ plt.show()
 
 ###### Segmentation
 
+image = np.load("arraySave/image.npy")
+boundingBox = np.load("arraySave/boundingBox.npy",allow_pickle=True )
+label_image = np.load("arraySave/label_image.npy")
 
-plt.figure(figsize=(8,6), dpi=80)
-plt.subplot(1,1,1)
-
-# reshape the image to a 2D array of pixels and 3 color values (RGB)
-pixel_values = Texture.reshape((-1, 3))
-# convert to float
-pixel_values = np.float32(pixel_values)
-
-# define stopping criteria
-criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2)
-
-# number of clusters (K)
-k = 2
-_, labels, (centers) = cv2.kmeans(pixel_values, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
-# convert back to 8 bit values
-centers = np.uint8(centers)
-
-# flatten the labels array
-labels = labels.flatten()
-segmented_image = centers[labels.flatten()]
-# reshape back to the original image dimension
-segmented_image = segmented_image.reshape(Texture.shape)
-plt.imshow(segmented_image,origin='lower')
-plt.savefig("../Resultat/Segmentation/segmented_image.png")
-plt.show()
 
 ###### Incrustation chemin
 
-image = -labels.reshape(512,512)+1
-pierre_segmenter, num_pierre = ndimage.label(image)
-plt.imshow(pierre_segmenter,origin='lower')
-plt.show()
+
