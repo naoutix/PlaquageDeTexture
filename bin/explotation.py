@@ -24,15 +24,14 @@ for pierre in range(num_pierre):
 Index_sort = numpy.argsort(-np.asarray(ListTaillePierre))
 
 
-for pierre in range(num_pierre):
-    pierre_trie = Index_sort[pierre]
-    boundingBoxPierre = (boundingBox[pierre_trie][0],boundingBox[pierre_trie][1])
-    a = image[boundingBoxPierre]
-    plt.figure()
-    plt.imshow(a)
-    plt.show()
+# for pierre in range(num_pierre):
+#     pierre_trie = Index_sort[pierre]
+#     boundingBoxPierre = (boundingBox[pierre_trie][0],boundingBox[pierre_trie][1])
+#     a = image[boundingBoxPierre]
+#     plt.figure()
+#     plt.imshow(a)
+#     plt.show()
 
 plt.figure()
-print((boundingBox[21][0],boundingBox[21][1]))
 plt.imshow(label_image[222:263,114:156])
 plt.show()
