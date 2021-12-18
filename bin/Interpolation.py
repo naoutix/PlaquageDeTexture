@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import shape 
-from scipy import interpolate,ndimage
+from scipy import interpolate,ndimage,sparse
 
 ## Reference du background
 patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
@@ -87,9 +87,10 @@ for i in range(nbPoint):
         ycercle_g = 2*Taille_chemin - (yc+Taille_chemin+1 - maskL)
     mask[xlimite_d:xlimite_g,ylimite_d:ylimite_g]=mask[xlimite_d:xlimite_g,ylimite_d:ylimite_g]*cercle[xcercle_d:xcercle_g,ycercle_d:ycercle_g]
 
-np.save("arraySave/environnement",environnement)
-np.save("arraySave/MaskChemin",mask)
 
+mask_bsr = sparse.bsr_matrix(mask)
+sparse.save_npz("arraySave/MaskChemin",mask_bsr)
+cv2.imwrite("arraySave/environnement.jpg", environnement)
 
 ### Retour graphique 
 ax.scatter(pointx,pointy,color='r')
