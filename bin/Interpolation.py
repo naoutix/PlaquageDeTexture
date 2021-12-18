@@ -7,16 +7,14 @@ from scipy import interpolate,ndimage
 ## Reference du background
 patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
 Taille_chemin = 200
-
+L = 8 #Largeur
+l = 8 #Longeur
+max_longeur_chemin = 10
 ######## Taille de patch de background ########
 
 
 patch_background_elem = cv2.cvtColor(patch_background_elem, cv2.COLOR_BGR2RGB)
-
-L = 8 #Largeur
-l = 8 #Longeur
 [l_elem,L_elem,nb_canaux] = patch_background_elem.shape
-max_longeur_chemin = 10
 
 ###### Creation du background
 
@@ -32,13 +30,14 @@ for i in range(l):
 ###### Selection des points
 
 
-plt.figure(figsize=(8,6), dpi=80)
-plt.subplot(1,1,1)
-plt.imshow(environnement)
+fig  = plt.figure(figsize=(13, 7), dpi=150)
+ax = plt.subplot(1,2,1)
+ax.set_title('Selection du chemin')
+ax.imshow(environnement,origin='lower')
 points = plt.ginput(max_longeur_chemin)   #Donnee Points
 pointx = np.asarray(points)[:,0]
 pointy = np.asarray(points)[:,1]
-plt.scatter(pointx,pointy,color='r')
+
 
 ###### Interpolation du chemin 
 
@@ -46,12 +45,8 @@ plt.scatter(pointx,pointy,color='r')
 # Spline Parametrique (NbPoints > 4)
 nbPoint = 50
 Points_parametrisation = np.linspace(0, 1.01, nbPoint)
-tck, u = interpolate.splprep([pointx, pointy], s=0)
+tck, u = interpolate.splprep([pointx, pointy],k=2)
 chemin = interpolate.splev(Points_parametrisation, tck)
-plt.plot(chemin[0],chemin[1])
-plt.savefig("../Resultat/Interpolation/draw_on_image_01.png")
-plt.show()
-plt.close()
 
 # Implentation du chemin
 x=np.arange(-Taille_chemin,Taille_chemin+1,1)
@@ -68,9 +63,40 @@ for i in range(nbPoint):
     yc = round(chemin[0][i])
     xc = round(chemin[1][i])
     #environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:] = environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:]*cercle3
-    mask[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1]=mask[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1]*cercle
-np.savetxt("chemin_mask",mask,fmt="%d")
-plt.imshow(mask,cmap='gray', vmin = 0, vmax = 1)
+    
+    # Verification limite
+    xlimite_d = xc-Taille_chemin
+    xlimite_g = xc+Taille_chemin+1
+    ylimite_d = yc-Taille_chemin
+    ylimite_g = yc+Taille_chemin+1
+    xcercle_d = 0
+    xcercle_g = 2*Taille_chemin+1
+    ycercle_d = 0
+    ycercle_g = 2*Taille_chemin+1
+    if (xc-Taille_chemin < 0):
+        xlimite_d = 0
+        xcercle_d = Taille_chemin-xc
+    if (xc+Taille_chemin+1 >= maskl):
+        xlimite_g = maskl-1
+        xcercle_g = 2*Taille_chemin - (xc+Taille_chemin+1 - maskl)
+    if (yc-Taille_chemin < 0):
+        ylimite_d = 0
+        ycercle_d = Taille_chemin-yc
+    if (yc+Taille_chemin+1 >= maskL):
+        ylimite_g = maskL-1
+        ycercle_g = 2*Taille_chemin - (yc+Taille_chemin+1 - maskL)
+    mask[xlimite_d:xlimite_g,ylimite_d:ylimite_g]=mask[xlimite_d:xlimite_g,ylimite_d:ylimite_g]*cercle[xcercle_d:xcercle_g,ycercle_d:ycercle_g]
+
+np.save("arraySave/environnement",environnement)
+np.save("arraySave/MaskChemin",mask)
+
+
+### Retour graphique 
+ax.scatter(pointx,pointy,color='r')
+ax.plot(chemin[0],chemin[1])
+ax2 =plt.subplot(1,2,2)
+ax2.imshow(mask,cmap='gray', vmin = 0, vmax = 1,origin='lower')
+ax2.set_title("Masque de placement des pierres")
 plt.savefig("../Resultat/Interpolation/chemin.png")
 plt.show()
 
@@ -86,5 +112,4 @@ Pierre_sorted = np.load("arraySave/PierreSorted.npy",allow_pickle=True)
 
 
 ###### Incrustation chemin
-
 
