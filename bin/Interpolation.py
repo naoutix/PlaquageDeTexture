@@ -9,7 +9,7 @@ patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
 Taille_chemin = 200
 L = 8 #Largeur
 l = 8 #Longeur
-max_longeur_chemin = 10
+max_longeur_chemin = 20
 ######## Taille de patch de background ########
 
 
