@@ -90,9 +90,8 @@ update(ax1,ax2,ax3,ax4,ax5,mask_array,environnement,densite_graph,sorted_point,n
 
 
 while not stop:
-    nb_pierre_place_k = 0
-    ### Meilleur placement trouver par fast_marching
     echec = 0
+    ### Meilleur placement trouver par fast_marching
     ### Placement de T pierre
     for i in index:
         ## Selection de la pierre
@@ -135,26 +134,26 @@ while not stop:
 
             ## Maj masque
             mask_array[xmin:xmax,ymin:ymax] = mask_array[xmin:xmax,ymin:ymax]*(-mask_pierre[xpmin:xpmax,ypmin:ypmax]+1)
-            nb_pierre_place_k = nb_pierre_place_k + 1
             densite_k = densite_k-ListeTaillePierre[num_pierre]
         else:
             echec = echec+1
     if (echec > nb_pierre_pass/1.5):
         T = T + 1
     else:
-        if(T > 1 and echec < (nb_pierre_pass/2)):
+        if(T > 1 and (echec < (nb_pierre_pass/2))):
             T = T - 1
     if T > 13:
         stop = True
 
+    ## Maj
     k = k+1
     nb_iter.append(k)
-    nb_pierre_place.append(nb_pierre_place_k)
+    nb_pierre_place.append(nb_pierre_pass-echec)
     T_grap.append(T)
     densite_graph.append((densite_k/densite_div) *100)
     sorted_point = np.unravel_index(sort[0:int(pas):int(pas/nb_pierre_pass)],res.shape)
     update(ax1,ax2,ax3,ax4,ax5,mask_array,environnement,densite_graph,sorted_point,nb_iter)
-    if nb_pierre_place_k != 0:
+    if nb_pierre_pass-echec != 0:
         res = skfmm.distance(mask_array,dx=1)
         sort = np.argsort(-res,axis=None)
         index = np.unravel_index(sort[0:int(pas):int(pas/nb_pierre_pass)], res.shape)
