@@ -62,7 +62,6 @@ mask = np.ones((maskl,maskL))
 for i in range(nbPoint):
     yc = round(chemin[0][i])
     xc = round(chemin[1][i])
-    #environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:] = environnement[xc-Taille_chemin:xc+Taille_chemin+1,yc-Taille_chemin:yc+Taille_chemin+1,:]*cercle3
     
     # Verification limite
     xlimite_d = xc-Taille_chemin
@@ -100,17 +99,4 @@ ax2.imshow(mask,cmap='gray', vmin = 0, vmax = 1,origin='lower')
 ax2.set_title("Masque de placement des pierres")
 plt.savefig("../Resultat/Interpolation/chemin.png")
 plt.show()
-
-
-
-
-###### Segmentation
-
-image = np.load("arraySave/image.npy")
-ListeTaillePierre = np.load("arraySave/ListTaillePierre.npy" )
-Pierre_mask = np.load("arraySave/PierreMask.npy",allow_pickle=True)
-Pierre_sorted = np.load("arraySave/PierreSorted.npy",allow_pickle=True)
-
-
-###### Incrustation chemin
 
