@@ -1,6 +1,5 @@
 bin/arraySave/*
 bin/res
-bin/rienAavoir.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
