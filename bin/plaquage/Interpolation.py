@@ -5,7 +5,6 @@ from numpy.core.fromnumeric import shape
 from scipy import interpolate,ndimage,sparse
 
 def create_background(patch_background_elem,l,L):
-    [l_elem,L_elem,nb_canaux] = patch_background_elem.shape
     ###### Creation du background
     patch_colonne = np.copy(patch_background_elem)
     for i in range(L):
