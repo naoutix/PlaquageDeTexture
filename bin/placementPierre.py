@@ -111,16 +111,16 @@ while not stop:
         xpmax = l_pierre
         ypmin = 0
         ypmax = L_pierre
-        if (xmin < 0):
+        if xmin < 0:
             xpmin = -xmin
             xmin = 0
-        if (xmax >= maskl):
+        if xmax >= maskl:
             xpmax = l_pierre-1 - (xmax - maskl)
             xmax = maskl-1
-        if (ymin < 0):
+        if ymin < 0:
             ypmin = -ymin
             ymin = 0
-        if (ymax  >= maskL):
+        if ymax  >= maskL:
             ypmax = L_pierre-1 - (ymax - maskL)
             ymax = maskL-1
 
