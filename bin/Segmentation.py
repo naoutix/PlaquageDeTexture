@@ -7,12 +7,12 @@ from math import sqrt
 from plaquage.Segmentation import segmentation,sep_box_pierre
 
 # Parametre
-Repetable  = True
-Edge_cutting = True
+Repetable  = False
+Edge_cutting = False
 Reverse = True
 
 # Chemin de la Texture
-Texture = cv2.imread("../Textures/freeTexture3.png")
+Texture = cv2.imread("../Textures/TextureReel.jpg")
 Texture = cv2.cvtColor(Texture, cv2.COLOR_BGR2RGB)
 Taille_chemin = 1
 nbligne,nbcol,canaux = Texture.shape

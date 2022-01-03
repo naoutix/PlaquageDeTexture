@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from numpy.lib.function_base import append 
 from scipy import interpolate,ndimage
 from math import sqrt
-
-
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.feature_extraction.image import grid_to_graph
 def segmentation(Texture,Reverse,Repetable):
     nbligne,nbcol,canaux = Texture.shape
     # reshape the image to a 2D array of pixels and 3 color values (RGB)
@@ -65,7 +65,6 @@ def sep_box_pierre(label_image,image_valeur,Edge_cutting):
         
         ## Decoupage
         pierre_image = np.copy(image_valeur[boundingBoxPierre])
-        #pierre_masque = np.copy(label_image[boundingBoxPierre])
         pierre_masque = (pierre_segmenter[boundingBoxPierre] == pierre+1)
         for i in range(3):
             pierre_image[:,:,i] = (pierre_segmenter[boundingBoxPierre] == pierre+1)*pierre_image[:,:,i]
@@ -81,7 +80,7 @@ def sep_box_pierre(label_image,image_valeur,Edge_cutting):
             if np.array_equal(pierre_image, Pierres[i] ):
                 flag = True
             i = i +1
-        if (not flag):
+        if (not flag and taillePierre > 8):
             Pierres_mask.append(pierre_masque)
             Pierres.append(pierre_image)
             ListTaillePierre.append(taillePierre)

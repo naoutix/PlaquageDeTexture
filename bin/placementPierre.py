@@ -26,7 +26,7 @@ def update(ax1,ax2,ax3,ax4,ax5,ax6,mask_array,environnement,densite_graph,sorted
     ax3.set_xlim(0,100)
     ax3.set_ylim(0,10)
     ax4.set_xlim(0,100)
-    ax4.set_ylim(0,13)
+    ax4.set_ylim(0,num_pierre_max/2)
     ax5.set_xlim(0,100)
     ax5.set_ylim(0,100)
     ## Label
@@ -132,7 +132,7 @@ while not stop:
     if (echec > T/1.5):
         Poisson = Poisson + 1
     else:
-        if(T > 1 and (echec < (T/2))):
+        if(Poisson > 1 and (echec < (T/2))):
             Poisson = Poisson - 1
     if T > num_pierre_max/2:
         stop = True
