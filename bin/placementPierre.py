@@ -6,6 +6,7 @@ from scipy import interpolate,ndimage,misc,sparse,stats
 from math import inf,sqrt
 import skfmm
 import time
+from plaquage.Interpolation import limite_changer
 
 ### Retour graphique
 def update(ax1,ax2,ax3,ax4,ax5,mask_array,environnement,densite_graph,sorted_point,nb_iter):
@@ -38,6 +39,7 @@ def update(ax1,ax2,ax3,ax4,ax5,mask_array,environnement,densite_graph,sorted_poi
     im5 = ax5.plot(nb_iter,densite_graph)
     plt.pause(0.1)
 
+Taille_chemin = 200
 
 ### Importation des données
 image = np.load("arraySave/image.npy")
@@ -103,37 +105,20 @@ while not stop:
 
         ## Dimension pierre
         [l_pierre,L_pierre] = mask_pierre.shape
-        xmin = i[0]-int(l_pierre/2)
-        xmax = i[0]+int(l_pierre/2+0.5)
-        ymin = i[1]-int(L_pierre/2)
-        ymax = i[1]+int(L_pierre/2+0.5)
-        xpmin = 0
-        xpmax = l_pierre
-        ypmin = 0
-        ypmax = L_pierre
-        if xmin < 0:
-            xpmin = -xmin
-            xmin = 0
-        if xmax >= maskl:
-            xpmax = l_pierre-1 - (xmax - maskl)
-            xmax = maskl-1
-        if ymin < 0:
-            ypmin = -ymin
-            ymin = 0
-        if ymax  >= maskL:
-            ypmax = L_pierre-1 - (ymax - maskL)
-            ymax = maskL-1
-
+        limite = [slice(i[0]-int(l_pierre/2),i[0]+int(l_pierre/2+0.5),None),slice(i[1]-int(L_pierre/2),i[1]+int(L_pierre/2+0.5))]
+        pierre_limite = [slice(0,l_pierre,None),slice(0,L_pierre,None)]
+        limite,pierre_limite = limite_changer(limite,pierre_limite,maskl,maskL)
         ## Verification chevauchement pierre
-        diff_mask = mask_array[xmin:xmax,ymin:ymax]-mask_pierre[xpmin:xpmax,ypmin:ypmax]
+        diff_mask = mask_array[limite]-mask_pierre[pierre_limite]
         if diff_mask.min() >= 0:
         ### Incrustation pierre
-            for i in range(3):
-                environnement[xmin:xmax,ymin:ymax,i]=environnement[xmin:xmax,ymin:ymax,i]*(-mask_pierre[xpmin:xpmax,ypmin:ypmax]+1)
-            environnement[xmin:xmax,ymin:ymax]= environnement[xmin:xmax,ymin:ymax]+pierre[xpmin:xpmax,ypmin:ypmax]
-
+            for j in range(3):
+                environnement[limite[0],limite[1],j]=environnement[limite[0],limite[1],j]*(-mask_pierre[pierre_limite]+1)
+            environnement[limite]= environnement[limite]+pierre[pierre_limite]
             ## Maj masque
-            mask_array[xmin:xmax,ymin:ymax] = mask_array[xmin:xmax,ymin:ymax]*(-mask_pierre[xpmin:xpmax,ypmin:ypmax]+1)
+            mask_array[limite] = mask_array[limite]*(-mask_pierre[pierre_limite]+1)
+            limite2 = tuple([slice(max(i[0]-int((l_pierre+Taille_chemin)/2),0),min(i[0]+int((l_pierre+Taille_chemin)/2+0.5),maskl),None),slice(min(i[1]-int((L_pierre+Taille_chemin)/2),0),max(i[1]+int((L_pierre+Taille_chemin)/2+0.5),maskL))])
+            res[limite2] = skfmm.distance(mask_array[limite2],dx=1)
             densite_k = densite_k-ListeTaillePierre[num_pierre]
         else:
             echec = echec+1
@@ -154,7 +139,7 @@ while not stop:
     sorted_point = np.unravel_index(sort[0:int(pas):int(pas/nb_pierre_pass)],res.shape)
     update(ax1,ax2,ax3,ax4,ax5,mask_array,environnement,densite_graph,sorted_point,nb_iter)
     if nb_pierre_pass-echec != 0:
-        res = skfmm.distance(mask_array,dx=1)
+        #res = skfmm.distance(mask_array,dx=1)
         sort = np.argsort(-res,axis=None)
         index = np.unravel_index(sort[0:int(pas):int(pas/nb_pierre_pass)], res.shape)
         index = np.array(index).transpose()

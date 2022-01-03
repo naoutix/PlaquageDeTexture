@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import shape 
 from scipy import interpolate,ndimage,sparse
 
-from plaquage.Interpolation import create_background,selection_chemin,interpolation,largeur_R_chemin
+from plaquage.Interpolation import create_background,selection_chemin,interpolation_Splines,largeur_R_chemin
 ## Reference du background
 patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
 patch_background_elem = cv2.cvtColor(patch_background_elem, cv2.COLOR_BGR2RGB)
@@ -12,13 +12,13 @@ Taille_chemin = 200
 L = 8 #Largeur
 l = 8 #Longeur
 max_longeur_chemin = 20
-nbPoint = 50
+nbPoint = 200
 ######## Taille de patch de background ########
 environnement = create_background(patch_background_elem,l,L)
 ###### Selection des points
 points,fig,ax = selection_chemin(environnement,max_longeur_chemin)
 ###### Interpolation du chemin 
-chemin = interpolation(points,nbPoint)
+chemin = interpolation_Splines(points,nbPoint)
 ###### Creation Mask
 mask_bsr = largeur_R_chemin(Taille_chemin,environnement,chemin)
 sparse.save_npz("arraySave/MaskChemin",mask_bsr)
