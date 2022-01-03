@@ -65,8 +65,8 @@ def sep_box_pierre(label_image,image_valeur,Edge_cutting):
         
         ## Decoupage
         pierre_image = np.copy(image_valeur[boundingBoxPierre])
-        pierre_masque = np.copy(label_image[boundingBoxPierre])
-        pierre_masque = (pierre_segmenter[boundingBoxPierre] == pierre+1)* pierre_masque
+        #pierre_masque = np.copy(label_image[boundingBoxPierre])
+        pierre_masque = (pierre_segmenter[boundingBoxPierre] == pierre+1)
         for i in range(3):
             pierre_image[:,:,i] = (pierre_segmenter[boundingBoxPierre] == pierre+1)*pierre_image[:,:,i]
         
