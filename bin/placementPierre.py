@@ -65,7 +65,7 @@ ListeTaillePierre = np.load("arraySave/ListTaillePierre.npy" )
 Pierre_mask = np.load("arraySave/PierreMask.npy",allow_pickle=True)
 Pierre_sorted = np.load("arraySave/PierreSorted.npy",allow_pickle=True)
 
-mask_array = -mask.toarray()+1
+mask_array = mask.toarray()
 #res = ndimage.gaussian_filter(mask.toarray(),sigma =10,order=2)
 [maskl,maskL] = mask_array.shape
 

@@ -99,26 +99,24 @@ def largeur_R_chemin(Taille_chemin,environnement,chemin):
         bsr_matrix: Masque contenant des 1 la où il y a le chemin et 0 sinon
     """
     nbPoint = len(chemin[0])
-    aleatoire = round(Taille_chemin)
-    x=np.arange(-aleatoire,aleatoire+1,1)
+    x=np.arange(-Taille_chemin,Taille_chemin+1,1)
     X,Y = np.meshgrid(x,x)
     # Forme autour du points à appliquer
-    cercle = ~(X*X+Y*Y < aleatoire*aleatoire)
-    cercle = cercle.astype(int)
+    cercle = X*X+Y*Y < Taille_chemin*Taille_chemin
     #Limite
     [maskl,maskL,_] = environnement.shape
     
-    mask = np.ones((maskl,maskL))
+    mask = np.zeros((maskl,maskL))
     for i in range(nbPoint):
 
         yc = round(chemin[0][i])
         xc = round(chemin[1][i])
         
         # Verification limite
-        Chemin_lim = [slice(xc-aleatoire,xc+aleatoire+1,None),slice(yc-aleatoire,yc+aleatoire+1,None)]
-        Cercle_index = [slice(0,2*aleatoire+1),slice(0,2*aleatoire+1)]
+        Chemin_lim = [slice(xc-Taille_chemin,xc+Taille_chemin+1,None),slice(yc-Taille_chemin,yc+Taille_chemin+1,None)]
+        Cercle_index = [slice(0,2*Taille_chemin+1),slice(0,2*Taille_chemin+1)]
         Chemin_lim,Cercle_index = limite_changer(Chemin_lim,Cercle_index,maskl,maskL)
-        # Multiplication par le mask
-        mask[Chemin_lim]=mask[Chemin_lim]*cercle[Cercle_index]     
+        # Application du masque
+        mask[Chemin_lim][cercle[Cercle_index]] = 1   
     mask_bsr = sparse.bsr_matrix(mask)
     return mask_bsr
