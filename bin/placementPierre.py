@@ -39,7 +39,7 @@ def update(ax1,ax2,ax3,ax4,ax5,ax6,mask_array,environnement,densite_graph,sorted
     ax6.set_xlabel("Fast_Marching")
     ### Plot
     ax1.imshow(mask_array,cmap="gray",origin="lower")
-    ax1.scatter(sorted_point[1],sorted_point[0],s=1)
+    ax1.scatter(sorted_point[:,1],sorted_point[:,0],s=1)
     ax2.imshow(environnement,origin="lower")
     ax3.plot(nb_iter,nb_pierre_place)
     ax4.plot(nb_iter,Poisson_grap)
@@ -77,10 +77,9 @@ Taille_chemin =200                     ### Taille du chemin
 T = 10                                 ### Temperature initial
 num_pierre_max = len(Pierre_mask)      ###  Nombre de pierre
 pas = np.argwhere(mask_array == 1).shape[0]/Taille_chemin ### Pas
-print(len(np.argwhere(mask_array==1)))
-print(len(np.argwhere(mask_array==0)))
-stop=False
-k = 0
+
+grid = np.indices(mask_array.shape)    ### indice du masque (optimisation)
+k = 0                                  ### Nombre d'iteration
 
 ### Suivi
 densite_div = len(np.argwhere(mask_array == 1))
@@ -91,20 +90,20 @@ Poisson_grap = []
 densite_graph = []
 
 ## Init
-res = skfmm.distance(mask_array,dx=1)
-sort = np.argsort(-res,axis=None)
-index = np.unravel_index(sort[0:int(pas):int(pas/T)], res.shape)
-index = np.array(index).transpose()
-index  = index.tolist()
-sorted_point = np.unravel_index(sort[0:int(pas):int(pas/T)],res.shape)
+res = skfmm.distance(mask_array,dx=1)                             ### Fast_Marching
+sort = np.argsort(-res[mask_array.astype(bool)])                  ### Trie des valeurs du masque
+xi=grid[0][mask_array.astype(bool)][sort][0:int(pas):int(pas/T)]  ### Prise des index de 0 à T espacer du pas
+xj=grid[1][mask_array.astype(bool)][sort][0:int(pas):int(pas/T)]
+index = np.hstack([xi[...,None],xj[...,None]])
 
-update(ax1,ax2,ax3,ax4,ax5,ax6,mask_array,environnement,densite_graph,sorted_point,nb_iter,Poisson_grap,res)
 
+stop = False
 while not stop:
+    update(ax1,ax2,ax3,ax4,ax5,ax6,mask_array,environnement,densite_graph,index,nb_iter,Poisson_grap,res)
     echec = 0
     ### Meilleur placement trouver par fast_marching
     ### Placement de T pierre
-    for i in index:
+    for i in range(len(index)):
         ## Selection de la pierre
         num_pierre = stats.poisson.rvs(Poisson)
         if (num_pierre >= num_pierre_max):
@@ -112,9 +111,10 @@ while not stop:
         mask_pierre = Pierre_mask[num_pierre]
         pierre = Pierre_sorted[num_pierre]
 
+        point = index[i]
         ## Dimension pierre
         [l_pierre,L_pierre] = mask_pierre.shape
-        limite = [slice(i[0]-int(l_pierre/2),i[0]+int(l_pierre/2+0.5),None),slice(i[1]-int(L_pierre/2),i[1]+int(L_pierre/2+0.5))]
+        limite = [slice(point[0]-int(l_pierre/2),point[0]+int(l_pierre/2+0.5),None),slice(point[1]-int(L_pierre/2),point[1]+int(L_pierre/2+0.5))]
         pierre_limite = [slice(0,l_pierre,None),slice(0,L_pierre,None)]
         limite,pierre_limite = limite_changer(limite,pierre_limite,maskl,maskL)
         ## Verification chevauchement pierre
@@ -124,8 +124,12 @@ while not stop:
             environnement[limite][mask_pierre[pierre_limite]]= pierre[pierre_limite][mask_pierre[pierre_limite]]
             ## Maj masque
             mask_array[limite][mask_pierre[pierre_limite]] = 0
+            
+            ## Maj Fast_marching
             limite2 = tuple([slice(max(limite[0].start-Taille_chemin,0),min(limite[0].stop+Taille_chemin,maskl),None),slice(min(limite[1].start-Taille_chemin,0),max(limite[1].stop+Taille_chemin,maskL),None)])
             res[limite2] = np.minimum(skfmm.distance(mask_array[limite2],dx=1),res[limite2])
+            
+            ## Courbe
             densite_k = densite_k-ListeTaillePierre[num_pierre]
         else:
             echec = echec+1
@@ -143,13 +147,12 @@ while not stop:
     nb_pierre_place.append(T-echec)
     Poisson_grap.append(Poisson)
     densite_graph.append((densite_k/densite_div) *100)
-    sorted_point = np.unravel_index(sort[0:int(pas):int(pas/T)],res.shape)
-    update(ax1,ax2,ax3,ax4,ax5,ax6,mask_array,environnement,densite_graph,sorted_point,nb_iter,Poisson_grap,res)
     if T-echec != 0:
-        sort = np.argsort(-res,axis=None)
-        index = np.unravel_index(sort[0:int(pas):int(pas/T)], res.shape)
-        index = np.array(index).transpose()
-        index  = index.tolist()
+        mask_conversion = mask_array.astype(bool)
+        sort = np.argsort(-res[mask_conversion])
+        xi=grid[0][mask_conversion][sort][0:int(pas):int(pas/T)]
+        xj=grid[1][mask_conversion][sort][0:int(pas):int(pas/T)]
+        index = np.hstack([xi[...,None],xj[...,None]])
     
 plt.savefig("../Resultat/placementPierre/courbes.png",dpi=150)
 
