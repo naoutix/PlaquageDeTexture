@@ -9,8 +9,8 @@ from plaquage.Interpolation import create_background,selection_chemin,interpolat
 patch_background_elem = cv2.imread("../Textures/freeTexture2.png")
 patch_background_elem = cv2.cvtColor(patch_background_elem, cv2.COLOR_BGR2RGB)
 Taille_chemin = 200
-L = 8 #Largeur
-l = 8 #Longeur
+L = 4 #Largeur
+l = 4 #Longeur
 max_longeur_chemin = 20
 nbPoint = 200
 ######## Taille de patch de background ########

@@ -133,7 +133,7 @@ while not stop:
             densite_k = densite_k-ListeTaillePierre[num_pierre]
         else:
             echec = echec+1
-    if (echec > T/1.5):
+    if (echec >= T+1):
         Poisson = Poisson + 1
     else:
         if(Poisson > 1 and (echec < (T/2))):

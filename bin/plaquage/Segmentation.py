@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 from numpy.lib.function_base import append 
 from scipy import interpolate,ndimage
 from math import sqrt
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.feature_extraction.image import grid_to_graph
+
 def segmentation(Texture,Reverse,Repetable):
     nbligne,nbcol,canaux = Texture.shape
     # reshape the image to a 2D array of pixels and 3 color values (RGB)
