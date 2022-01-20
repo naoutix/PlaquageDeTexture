@@ -86,7 +86,6 @@ def limite_changer(Chemin_lim,Cercle_index,l,L):
         ylim_g = L-1
     return tuple([slice(xlim_d,xlim_g,None),slice(ylim_d,ylim_g,None)]),tuple([slice(xcercle_d,xcercle_g,None),slice(ycercle_d,ycercle_g,None)])
     
-
 def largeur_R_chemin(Taille_chemin,environnement,chemin):
     """Creation d'un masque en fonction d'un chemin dans un environnemment
 
