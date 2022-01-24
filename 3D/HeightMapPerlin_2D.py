@@ -8,7 +8,16 @@ import matplotlib
 from matplotlib import pyplot
 from mpl_toolkits.mplot3d import axes3d
 
+
 def set_color(x,y,image,value):
+    """[summary]
+
+    Args:
+        x ([type]): [description]
+        y ([type]): [description]
+        image ([type]): [description]
+        value ([type]): [description]
+    """    
     if value < -0.07:
         image.putpixel((x,y), blue)
     elif value < 0:
@@ -21,6 +30,16 @@ def set_color(x,y,image,value):
         image.putpixel((x,y), snow)
 
 def set_texture(image,image_texture,couleur_texture):
+    """[summary]
+
+    Args:
+        image ([type]): [description]
+        image_texture ([type]): [description]
+        couleur_texture ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """    
     im = image.load()
     im_tex = image_texture.load()
     im_texture_finale = Image.new(mode="RGB",size=shape)
@@ -63,16 +82,7 @@ for x in range(shape[0]):
                             repeaty=shape[1],
                             base=0)
         set_color(x,y,image,value)
-
 image.save(image_filepath)
-
-# lin_x = np.linspace(0,1,shape[0],endpoint=False)
-# lin_y = np.linspace(0,1,shape[1],endpoint=False)
-# x,y = np.meshgrid(lin_x,lin_y)
-# fig = matplotlib.pyplot.figure()
-# ax = fig.add_subplot(111, projection="3d")
-# ax.plot_surface(x,y,value,facecolors=image)
-# pyplot.show()
 
 # Application de la texture sur chaque couleur correspondant à la texture
 # Mer:
