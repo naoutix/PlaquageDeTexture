@@ -1,5 +1,7 @@
 # PlaquageDeTexture
 Bienvenue dans le dojo du plaquage de texture
+
+Pour lancer le serveur 3D : python -m http.server -> https://localhost:8000/
 # TUTO PARTIE 2 (episode 1,2,3) : https://www.youtube.com/watch?v=cNY2s5Kq9lE&list=PLUWxWDlz8PYLIG5w43tcZdaglQgXAQIPs
 PARTIE 1 :
 
