@@ -11,9 +11,10 @@ material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 cube = new THREE.Mesh( geometry, material );
 //scene.add(cube);
 
+
+// Geometry Plan
 geometry = new THREE.PlaneGeometry( 10, 10 ,10,10);
 texture = THREE.ImageUtils.loadTexture( "texture_finale.jpg" );
-//material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
 material = new THREE.MeshLambertMaterial({ map : texture ,side:THREE.DoubleSide,wireframe:true});
 plane = new THREE.Mesh( geometry, material );
 
