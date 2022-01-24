@@ -10,15 +10,11 @@ from mpl_toolkits.mplot3d import axes3d
 
 shape = (512,512)
 
-
-#### Bruit de Perlin
 scale = 50.0
 octaves = 2
 lacunarity = 2.0
 persistence = 1.2
 
-
-# Couleur RGB
 blue = (66,110,225)
 green = (36,135,32)
 beach = (240,210,172)
@@ -54,7 +50,6 @@ def set_texture(image,image_texture,couleur_texture):
                 im_texture_finale.putpixel((x,y),im[x,y])
     return im_texture_finale
 
-Perlin = np.zeros(shape)
 for x in range(shape[0]):
     for y in range(shape[1]):
         value = noise.pnoise2(x/scale,
@@ -65,9 +60,8 @@ for x in range(shape[0]):
                             repeatx=shape[0],
                             repeaty=shape[1],
                             base=0)
-        value = np.zeros()
         set_color(x,y,image,value)
-print(value)
+
 image.save(image_filepath)
 
 # lin_x = np.linspace(0,1,shape[0],endpoint=False)
