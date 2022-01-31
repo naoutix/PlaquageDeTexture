@@ -1,7 +1,22 @@
-# PlaquageDeTexture
-Bienvenue dans le dojo du plaquage de texture
+# Plaquage De Texture
+Dans ce projet realiser à l'enseeiht,Nous avons voulu plaqué des texture dans une environnement 2D puis 3D.
+  
+# Comment l'utiliser:  
+## 2D  
+lancer dans :  
+- `2D/bin/Segmentation.py` pour segementer des pierre et obtenir une liste de pierrex.  
+- `2D/bin/interpolation.py` pour choisir des points sur une image et tracer un chemin.  
+- `2D/bin/placementPierre.py` pour placer des pierres sur le chemin prétracé.  
+## 3D  
+Pour 
+- dans le dossier 3D: `cd ./3D/`
+- 3D/HeightMapPerlin_2D.py
+- lancer le serveur 3D : `python3 -m http.server` 
+- https://localhost:8000/3D.html
+- Pour mettre les profondeur sur la carte lancer dans le terminal (F12 ou Ctrl+maj+K)
+- `elevation()`
 
-Pour lancer le serveur 3D : python -m http.server -> https://localhost:8000/
+PS:TO-DO mettre photo
 # TUTO PARTIE 2 (episode 1,2,3) : https://www.youtube.com/watch?v=cNY2s5Kq9lE&list=PLUWxWDlz8PYLIG5w43tcZdaglQgXAQIPs
 PARTIE 1 :
 
