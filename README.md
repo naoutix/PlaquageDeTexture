@@ -1,5 +1,5 @@
 # Plaquage De Texture
-Dans ce projet realiser à l'enseeiht,Nous avons voulu plaqué des texture dans une environnement 2D puis 3D.
+Dans ce projet realiser à l'enseeiht,il fallais genere des chemin sur des environnement 2D puis 3D.
   
 # Comment l'utiliser:  
 ## 2D  
