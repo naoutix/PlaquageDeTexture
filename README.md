@@ -12,7 +12,7 @@ Pour
 - dans le dossier 3D: `cd ./3D/`
 - 3D/HeightMapPerlin_2D.py
 - lancer le serveur 3D : `python3 -m http.server` 
-- https://localhost:8000/3D.html
+- allez sur: https://localhost:8000/3D.html
 - Pour mettre les profondeur sur la carte lancer dans le terminal (F12 ou Ctrl+maj+K)
 - `elevation()`
 
