@@ -21,18 +21,20 @@ Pour
 Segmentation:  
 <img src="2D/Resultat/Segmentation/segmentation.png" height="200" width="200" /> ->
 <img src="2D/Resultat/Segmentation/Pierres_Rep_1_Edge_1.png" height="200" width="200" />  
-Interpolation:
+Interpolation:  
 <img src="2D/Resultat/Interpolation/chemin.png" height="200" width="200" />  
-PlacementPierre : 
+PlacementPierre:  
 <img src="2D/Resultat/placementPierre/final.png" height="200" width="200" />  
 
 ## 3D
 Elevation(Perlin):  
 <img src="3D/threejs/assets/images/perlin.png" height="200" width="200" /> +
 <img src="3D/threejs/assets/images/texture_finale.png" height="200" width="200" /> =  
-<img src="example.png" height="200" width="200"
+<img src="example.png" height="200" width="200" />
+
 # TUTO PARTIE 2 (episode 1,2,3) : 
 https://www.youtube.com/watch?v=cNY2s5Kq9lE&list=PLUWxWDlz8PYLIG5w43tcZdaglQgXAQIPs
+
 PARTIE 1 :
 
   Rapport 1 (Aller)        : https://www.overleaf.com/project/61ae0c8853335a2cfb8fd00f
