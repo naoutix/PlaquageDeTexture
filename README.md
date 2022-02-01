@@ -10,13 +10,27 @@ lancer dans :
 ## 3D  
 Pour 
 - dans le dossier 3D: `cd ./3D/`
-- lancer le script : `3D/HeightMapPerlin_2D.py` ^pour genere la height map
+- lancer le script : `3D/HeightMapPerlin_2D.py` pour genere la height map
 - lancer le serveur 3D : `python3 -m http.server` 
 - allez sur: https://localhost:8000/3D.html
 - Pour mettre les profondeur sur la carte lancer dans le terminal (F12 ou Ctrl+maj+K)
 - lancer dans la console :`elevation()`
 
-PS:TO-DO mettre photo
+# Resultat  
+## 2D
+Segmentation:  
+<img src="2D/Resultat/Segmentation/segmentation.png" height="200" width="200" /> ->
+<img src="2D/Resultat/Segmentation/Pierres_Rep_1_Edge_1.png" height="200" width="200" />  
+Interpolation:
+<img src="2D/Resultat/Interpolation/chemin.png" height="200" width="200" />  
+PlacementPierre : 
+<img src="2D/Resultat/placementPierre/final.png" height="200" width="200" />  
+
+## 3D
+Elevation(Perlin):  
+<img src="3D/threejs/assets/images/perlin.png" height="200" width="200" /> +
+<img src="3D/threejs/assets/images/texture_finale.png" height="200" width="200" /> =  
+<img src="example.png" height="200" width="200"
 # TUTO PARTIE 2 (episode 1,2,3) : 
 https://www.youtube.com/watch?v=cNY2s5Kq9lE&list=PLUWxWDlz8PYLIG5w43tcZdaglQgXAQIPs
 PARTIE 1 :
