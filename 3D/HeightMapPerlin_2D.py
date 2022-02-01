@@ -108,7 +108,7 @@ for x in range(shape[0]):
 # norm_me = np.vectorize(norm_me)
 # arr = norm_me(values)
 arr = np.round(values*np.round(255/(1-limite)))
-cv2.imwrite("perlin.png",arr)
+cv2.imwrite("threejs/assets/images/perlin.png",arr)
 image.save(image_filepath)
 
 # Application de la texture sur chaque couleur correspondant à la texture
@@ -124,6 +124,4 @@ texture_finale = paste_texture("../2D/Textures/freeTexture13.png",grandeur*2,sha
 texture_finale = paste_texture("../2D/Textures/freeTexture15.png",grandeur*2,shape,texture_finale,snow)
 plt.imshow(texture_finale)
 plt.show()
-texture_finale.save("texture_finale.png")
-
-# Mettre la carte de hauteur en 3D ou coller la texture avec les chemins sur la texture 3D
+texture_finale.save("threejs/assets/images/texture_finale.png")
