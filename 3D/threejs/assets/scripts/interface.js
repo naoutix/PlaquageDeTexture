@@ -19,7 +19,7 @@ img.onload = function() {
 // Geometry Plan
 geometry = new THREE.PlaneGeometry( 10, 10 ,img.height-1,img.width-1);
 texture = THREE.ImageUtils.loadTexture( "assets/images/texture_finale.png" );
-material = new THREE.MeshLambertMaterial({ map : texture ,side:THREE.DoubleSide,wireframe:false});
+material = new THREE.MeshLambertMaterial({ map : texture ,side:THREE.DoubleSide,wireframe:true});
 plane = new THREE.Mesh( geometry, material );
 scene.add( plane );
 
@@ -47,7 +47,7 @@ function dessiner(img) {
 	data_tab = ctx.getImageData(0, 0, img.width, img.height);
 }
 
-function elevation(data_tab,value=3) {
+function elevation(data_tab,value=1) {
     for (let i= 0; i < plane.geometry.attributes.position.count; i++) {
         //plane.geometry.attributes.position.setZ(i,Math.random()*value+offset);
 		plane.geometry.attributes.position.setZ(i,(data_tab.data[i*4]/255)*value);
