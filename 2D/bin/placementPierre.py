@@ -65,15 +65,32 @@ ListeTaillePierre = np.load("arraySave/ListTaillePierre.npy" )
 Pierre_mask = np.load("arraySave/PierreMask.npy",allow_pickle=True)
 Pierre_sorted = np.load("arraySave/PierreSorted.npy",allow_pickle=True)
 
+
+## Scale factor
+scale_percent = 100/(200/5)
+for i in range(int(len(Pierre_sorted)/2)):
+
+    #calculate the 50 percent of original dimensions
+    width = int(Pierre_mask[i].shape[1] * scale_percent / 100)
+    height = int(Pierre_mask[i].shape[0] * scale_percent / 100)
+
+    # dsize
+    dsize = (width, height)
+
+    # resize image
+    Pierre_mask[i] = cv2.resize(Pierre_mask[i].astype(float), dsize).astype(bool)
+    Pierre_sorted[i] = cv2.resize(Pierre_sorted[i].astype(float), dsize).astype(int)
+
+
 mask_array = mask.toarray()
 #res = ndimage.gaussian_filter(mask.toarray(),sigma =10,order=2)
 [maskl,maskL] = mask_array.shape
 
 ### Algorithme de placement des pierre
-k_max=0                                ### iteration maximum
+k_max=100                                ### iteration maximum
 Poisson = 1                            ### lambda de départ
 alpha = 0.9                            ### Coefficient de décroissance
-Taille_chemin =200                     ### Taille du chemin
+Taille_chemin =25                     ### Taille du chemin
 T = 10                                 ### Temperature initial
 num_pierre_max = len(Pierre_mask)      ###  Nombre de pierre
 pas = np.argwhere(mask_array == 1).shape[0]/Taille_chemin ### Pas
@@ -153,10 +170,12 @@ while not stop:
         xi=grid[0][mask_conversion][sort][0:int(pas):int(pas/T)]
         xj=grid[1][mask_conversion][sort][0:int(pas):int(pas/T)]
         index = np.hstack([xi[...,None],xj[...,None]])
+    if k > k_max:
+        stop = True
     
 plt.savefig("../Resultat/placementPierre/courbes.png",dpi=150)
 
 plt.figure()
 plt.imshow(environnement,origin="lower")
-plt.savefig("../Resultat/placementPierre/final.png",dpi=150)
+cv2.imwrite("../Resultat/placementPierre/final.png",cv2.cvtColor(environnement, cv2.COLOR_RGB2BGR))
 plt.show()

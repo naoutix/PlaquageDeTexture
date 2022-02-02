@@ -44,6 +44,27 @@ def selection_chemin(environnement,max_longeur_chemin=10):
     points = plt.ginput(max_longeur_chemin)   #Donnee Points
     return points,fig,ax
 
+def selection_chemin2(chemin,environnement):
+    """Selection interactif de points 
+
+    Args:
+        environnement (numpy.ndarray): background
+        max_longeur_chemin (int): taille maximal avant l'arret interactif
+
+    Returns:
+        List[Tuple[float,float]]: points-> points selectionner
+        Figure                  : fig -> figure 
+        SubplotBase             : ax -> ax de la figure 
+    """
+    fig  = plt.figure(figsize=(13, 7), dpi=150)
+    ax = plt.subplot(1,2,1)
+    ax.set_title('Selection du chemin')
+    ax.imshow(environnement,origin='lower')
+    chemins = chemin[:,:,0]
+    points = np.argwhere(np.transpose(chemins) == 255)
+    points = list(map(tuple,points))
+    return points,fig,ax
+
 def interpolation_Splines(points,nbPoint,k=2):
     """Interpolation des points selon une Spline
 
@@ -110,6 +131,40 @@ def largeur_R_chemin(Taille_chemin,environnement,chemin):
 
         yc = round(chemin[0][i])
         xc = round(chemin[1][i])
+        
+        # Verification limite
+        Chemin_lim = [slice(xc-Taille_chemin,xc+Taille_chemin+1,None),slice(yc-Taille_chemin,yc+Taille_chemin+1,None)]
+        Cercle_index = [slice(0,2*Taille_chemin+1),slice(0,2*Taille_chemin+1)]
+        Chemin_lim,Cercle_index = limite_changer(Chemin_lim,Cercle_index,maskl,maskL)
+        # Application du masque
+        mask[Chemin_lim][cercle[Cercle_index]] = 1   
+    mask_bsr = sparse.bsr_matrix(mask)
+    return mask_bsr
+
+def largeur_R_chemin2(Taille_chemin,environnement,chemin):
+    """Creation d'un masque en fonction d'un chemin dans un environnemment
+
+    Args:
+        Taille_chemin (int): Taille du chemin voulue en pixels
+        environnement (numpy.ndarray): environnement :TODO -> juste mettre la taille
+        chemin (List[tuple[float,float]]): Points du chemin
+
+    Returns:
+        bsr_matrix: Masque contenant des 1 la où il y a le chemin et 0 sinon
+    """
+    nbPoint = len(chemin)
+    x=np.arange(-Taille_chemin,Taille_chemin+1,1)
+    X,Y = np.meshgrid(x,x)
+    # Forme autour du points à appliquer
+    cercle = X*X+Y*Y < Taille_chemin*Taille_chemin
+    #Limite
+    [maskl,maskL,_] = environnement.shape
+    
+    mask = np.zeros((maskl,maskL))
+    for i in range(nbPoint):
+
+        yc = round(chemin[i][0])
+        xc = round(chemin[i][1])
         
         # Verification limite
         Chemin_lim = [slice(xc-Taille_chemin,xc+Taille_chemin+1,None),slice(yc-Taille_chemin,yc+Taille_chemin+1,None)]

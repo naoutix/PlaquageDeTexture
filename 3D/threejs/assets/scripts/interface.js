@@ -19,7 +19,7 @@ img.onload = function() {
 // Geometry Plan
 geometry = new THREE.PlaneGeometry( 10, 10 ,img.height-1,img.width-1);
 texture = THREE.ImageUtils.loadTexture( "assets/images/texture_finale.png" );
-material = new THREE.MeshLambertMaterial({ map : texture ,side:THREE.DoubleSide,wireframe:true});
+material = new THREE.MeshLambertMaterial({ map : texture ,side:THREE.DoubleSide,wireframe:false});
 plane = new THREE.Mesh( geometry, material );
 scene.add( plane );
 
