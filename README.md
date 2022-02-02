@@ -1,5 +1,5 @@
 # Plaquage De Texture
-Dans ce projet realiser à l'enseeiht,il fallais generer des chemin ssur des environnements 2D puis 3D.
+Dans ce projet realiser à l'enseeiht,il fallais generer des chemins sur des environnements 2D puis 3D.
   
 # Comment l'utiliser:  
 ## 2D  
