@@ -11,7 +11,7 @@ lancer dans :
 Pour 
 - dans le dossier 3D: `cd ./3D/`
 - lancer le script : `3D/HeightMapPerlin_2D.py` pour genere la height map
-- lancer le serveur 3D : `python3 -m http.server` 
+- lancer le serveur 3D : `python3 -m http.server` (ou tout autre server local)
 - allez sur: https://localhost:8000/3D.html
 - Pour mettre les profondeur sur la carte lancer dans le terminal (F12 ou Ctrl+maj+K)
 - lancer dans la console :`elevation()`
