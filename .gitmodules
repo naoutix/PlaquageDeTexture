@@ -1,0 +1,3 @@
+[submodule "3D/DemoNoisePerlin"]
+	path = 3D/DemoNoisePerlin
+	url = https://github.com/naoutix/DemoNoisePerlin.git
